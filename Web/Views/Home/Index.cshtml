@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Employees Test";
+}
+
+<div class="jumbotron">
+    <h1>Employees Test</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <p>ID Employee:</p>
+        <input id="txtID" type="text" />
+        <input id="btnGetEmployee" type="button" value="Get Employees" onclick="getEmployees()"/>
+    </div>       
+</div>
+<div class="row">
+    <div class="col-md-4">
+        &nbsp;
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        &nbsp;
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <table class="table" style="width:100%;" id="tblEmployees">
+            <thead id="tableHeader">
+            </thead>
+            <tbody id="dataEmployees"></tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+      
+
+    function getEmployees() {
+        var idEmploye = ($("#txtID").val().length > 0 ? $("#txtID").val() : 0);      
+        var stringTabla = "";
+        $("#tableHeader").empty();
+        $("#dataEmployees").empty();
+
+        var tableHeader = "<tr><th >ID</th><th >Name</th><th >Contract Type Name</th><th >RoleId</th><th >Role Name</th><th >Role Description</th><th >Hourly Salary</th><th >Monthly Salary</th><th >Annual Salary</th></tr>";
+        
+        $.get("http://localhost:61067/api/v1/Employees/GetEmployee?id=" + idEmploye, function (data, status) {
+            console.log(data);
+           
+         
+            $.each(data, function () {
+
+                stringTabla += "<tr>";
+                stringTabla += "<td>" + this.id + "</td>";
+                stringTabla += "<td>" + this.name + "</td>";
+                stringTabla += "<td>" + this.contractTypeName + "</td>";
+                stringTabla += "<td>" + this.roleId + "</td>";
+                stringTabla += "<td>" + this.roleName + "</td>";
+                stringTabla += "<td>" + this.roleDescription + "</td>";
+                stringTabla += "<td>" + this.hourlySalary + "</td>";
+                stringTabla += "<td>" + this.monthlySalary + "</td>";
+                stringTabla += "<td>" + this.calculateSalary + "</td>";
+                stringTabla += "</tr>";               
+            });        
+            $("#tableHeader").html(tableHeader);
+            $("#dataEmployees").html(stringTabla);
+        }); 
+    }
+
+</script>
